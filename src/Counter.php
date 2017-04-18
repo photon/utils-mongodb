@@ -8,10 +8,25 @@ abstract class Counter
     const database = 'default';
     const collection = 'counters';
 
+    public static function resetAll()
+    {
+        $db = Connection::get(static::database);
+        $counters = $db->{static::collection};
+        $counters->drop();
+    }
+
+    public static function reset($id)
+    {
+        $db = Connection::get(static::database);
+        $counters = $db->{static::collection};
+        $counters->deleteOne(array('_id' => $id));
+    }
+
     public static function get($id)
     {
         $db = Connection::get(static::database);
         $counters = $db->{static::collection};
+
         $obj = $counters->findOne(array('_id' => $id));
         if ($obj === null) {
             return 0;

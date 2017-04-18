@@ -1,5 +1,7 @@
 <?php
 
+use photon\db\Connection;
+
 class MyCounters extends \photon\utils\mongodb\Counter
 {
     const database = 'default';
@@ -10,6 +12,8 @@ class MyCountersTest extends \photon\test\TestCase
 {
     public function testCounter()
     {
+        MyCounters::resetAll();
+
         $value = MyCounters::get('foo');
         $this->assertEquals($value, 0);
 
@@ -21,5 +25,9 @@ class MyCountersTest extends \photon\test\TestCase
 
         $value = MyCounters::get('foo');
         $this->assertEquals($value, 1);
+
+        MyCounters::reset('foo');
+        $value = MyCounters::get('foo');
+        $this->assertEquals($value, 0);
     }
 }
