@@ -45,7 +45,10 @@ abstract class Counter
             'upsert' => 1,
             'new' => 1,
         ));
-        
+
+        $objs = $obj->toArray();
+        $obj = $objs[0];
+
         return $obj['value']['c'];
     } 
 }
