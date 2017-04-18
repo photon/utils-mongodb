@@ -5,6 +5,13 @@ utils-mongodb
 
 Various useful tools for MongoDB
 
+PHP Versions
+------------
+
+- 5.6, 7.0 and 7.1 are supported and tested under travis
+- Use ext-mongodb and mongodb/mongodb. Do not works anymore with legacy ext-mongo
+
+
 Quick start
 ----------
 
@@ -14,7 +21,7 @@ Quick start
 
 or for a specific version
 
-    composer require "photon/utils-mongodb:1.0.0"
+    composer require "photon/utils-mongodb:2.0.0"
 
 2) Define a MongoDB connection in your project configuration
 

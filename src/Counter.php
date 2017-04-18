@@ -11,7 +11,7 @@ abstract class Counter
     public static function get($id)
     {
         $db = Connection::get(static::database);
-        $counters = $db->selectCollection(static::collection);
+        $counters = $db->{static::collection};
         $obj = $counters->findOne(array('_id' => $id));
         if ($obj === null) {
             return 0;
