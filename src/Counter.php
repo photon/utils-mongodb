@@ -38,6 +38,24 @@ abstract class Counter
     public static function inc($id)
     {
         $db = Connection::get(static::database);
+
+        // PHP 7.0+  (mongodb)
+        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+            $counters = $db->{static::collection};
+
+            $obj = $counters->findOneAndUpdate(
+                    array('_id' => $id),
+                    array('$inc' => array('c' => 1)),
+                    array(
+                        'upsert' => true,
+                        'returnDocument' => \MongoDB\Operation\FindOneAndUpdate::RETURN_DOCUMENT_AFTER
+                    )
+            );
+
+            return $obj['c'];
+        }
+
+        // PHP 5.6 (mongo)
         $obj = $db->command(array(
             'findandmodify' => static::collection,
             'query' => array('_id' => $id),
