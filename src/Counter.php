@@ -33,10 +33,29 @@ abstract class Counter
         }
         
         return $obj['c'];
-    }    
+    }
 
     public static function inc($id)
     {
+        // PHP 7.0+
+        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+            $db = Connection::get(static::database);
+            $counters = $db->{static::collection};
+
+            $obj = $counters->findAndModify(array(
+                'query' => array('_id' => $id),
+                'update' => array('$inc' => array('c' => 1)),
+                'upsert' => true,
+                'new' => true,
+            ));
+
+            $objs = $obj->toArray();
+            $obj = $objs[0];
+
+            return $obj['value']['c'];
+        }
+
+        // PHP 5.6
         $db = Connection::get(static::database);
         $obj = $db->command(array(
             'findandmodify' => static::collection,
